@@ -5,7 +5,8 @@ var postsController = require('../controllers/PostsController');
 router.post('/', function(req, res) {
 	var keywords = req.body.keywords.split(',');
 	var publics = req.body.publics.split(',');
-	postsController.getPopularPosts(publics, 10, function(error, posts) {
+	var quantity = req.body.quantity;
+	postsController.getPopularPosts(publics, quantity, function(error, posts) {
 		if (error) {
 			res.status(500).send(error);
 		} else {

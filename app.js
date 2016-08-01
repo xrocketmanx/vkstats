@@ -1,6 +1,5 @@
 var express = require("express");
 var path = require('path');
-var postsController = require("./PostsController");
 var app = express();
 
 var bodyParser = require("body-parser");

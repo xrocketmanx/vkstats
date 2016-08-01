@@ -11,21 +11,33 @@
 	<link rel="shrotcut icon" type="image/x-icon" href="">
 </head>
 <body>
-	<header>
-		<h1>VKstats</h1>
+	<header class="main-header">
+		<h1><a href="/"><span class="midnight-blue">VK</span>stats</a></h1>
 	</header>
-	<main>
-		<article class="posts-search">
-			<header>
-				<h2 class="title">Posts search: </h2>
+	<main class="main-content">
+		<article class="search posts-search">
+			<div class="content">
+				<form class="search-form" action="search" method="POST">
+					<p class="input-group">
+						<label for="publics">publics:</label>
+						<input type="search" name="publics" id="publics" required />
+					</p>
+					<p class="input-group">
+						<label for="keywords">keywords:</label>
+						<input type="text" name="keywords" id="keywords" />
+					</p>
+					<p class="input-group">
+						<label for="posts-quantity">quantity:</label>
+						<input type="number" name="quantity" min="1" id="posts-quantity" value="5" required />
+					</p>
+					<input type="submit" value="Search">
+				</form>
+				<section class="posts">
+				</section>
+			</div>
+			<header class="title">
+				<h2>Posts search</h2>
 			</header>
-			<form class="search-form" action="search" method="POST">
-				<input type="text" name="publics">
-				<input type="text" name="keywords">
-				<input type="submit" value="Find">
-			</form>
-			<section class="posts">
-			</section>
 		</article>
 	</main>
 	<script type="text/javascript" src="js/script.js"></script>

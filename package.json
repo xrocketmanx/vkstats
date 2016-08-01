@@ -2,9 +2,10 @@
   "name": "vkstats",
   "version": "1.0.0",
   "description": "Collects information about posts of vk publics",
-  "main": "index.js",
+  "main": "bin/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node bin/server.js"
   },
   "author": "Alexander Amirov",
   "license": "ISC",
