@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>vkstats</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, width=device-width" />
+	<meta name="description" content="App shows some vk statistic" />
+	<meta name="author" content="Alexander Amirov" />
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="shrotcut icon" type="image/x-icon" href="">
+</head>
+<body>
+	<header>
+		<h1>VKstats</h1>
+	</header>
+	<main>
+		<article class="posts-search">
+			<header>
+				<h2 class="title">Posts search: </h2>
+			</header>
+			<form class="search-form" action="search" method="POST">
+				<input type="text" name="publics">
+				<input type="text" name="keywords">
+				<input type="submit" value="Find">
+			</form>
+			<section class="posts">
+			</section>
+		</article>
+	</main>
+	<script type="text/javascript" src="js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+	"uri": "https://api.vk.com/method/",
+	"methods": {
+		"getPosts": {
+			"query": "wall.get?",
+			"params": {
+				"domain": "",
+				"offset": 0,
+				"count": 100,
+				"filter": "owner",
+				"v": "5.53"
+			}
+		}
+	}
+}
