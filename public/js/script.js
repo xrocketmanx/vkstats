@@ -59,11 +59,12 @@ function DOM() {
 		return $img;
 	};
 
-	var headerHeight = $('.main-header').outerHeight();
+	var $header = $('.main-header');
 	this.pushToBottom = function($content, $footer){
+		var headerHeight = $header.height();
 		var footerHeight = $footer.outerHeight();
 		var docHeight = $(window).height();
-		var height = docHeight - headerHeight - footerHeight - 6;
+		var height = docHeight - headerHeight - footerHeight - 5;
 		$content.height(height);
 	}
 }

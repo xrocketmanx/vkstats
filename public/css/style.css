@@ -101,7 +101,7 @@ input:not([type=submit]) {
 }
 
 input[type=number] {
-	width: 2em;
+	width: 3em;
 }
 
 input:focus {
@@ -118,14 +118,13 @@ input:-webkit-autofill {
 }
 
 input[type=submit] {
-	display: block;
+	display: inline-block;
 	background-color: #34495e;
 	color: #fff;
 	border: none;
 	padding: 5px 15px;
 	width: 100px;
-	margin: auto;
-	margin-top: 30px;
+	margin: 15px auto;
 	cursor: pointer;
 	border-radius: 50px;
 	transition: .3s ease-out;
@@ -153,6 +152,7 @@ input[type=submit]:active {
 
 .search .active {
 	background-color: #3498db;
+	margin-top: 5px;
 }
 
 .search .title h2 {
@@ -192,9 +192,8 @@ input[type=submit]:active {
 	border-bottom: 2px solid #2c3e50;
 }
 
-.posts {
-	overflow: auto;
-	min-height: 200px;
+.scroller {
+	overflow-y: scroll;
 }
 
 .posts img {
@@ -207,7 +206,11 @@ img[href$="loading.gif"] {
 	height: 64px;
 }
 
-@media only screen and (max-width: 769px) {
+@media only screen and (max-width: 817px) {
+	.search .content {
+		width: 90%;
+	}
+
 	.search-form {
 		text-align: left;
 		padding: 0;
@@ -220,5 +223,12 @@ img[href$="loading.gif"] {
 	.input-group input {
 		display: block;
 		width: 100%;
+	}
+}
+
+@media only screen and (max-height: 347px) {
+	.search .title {
+		font-size: 1em;
+		padding: 0;
 	}
 }
