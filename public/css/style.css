@@ -138,6 +138,14 @@ input[type=submit]:active {
 	transform: translateY(3px);
 }
 
+.search .hint {
+	color: #34495e;
+}
+
+.search .hint span {
+	font-weight: bold;
+}
+
 .search .title {
 	padding: 15px 0;
 	box-shadow: 0 4px 5px 0 #2c3e50;

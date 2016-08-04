@@ -29,7 +29,7 @@ $(document).ready(function() {
 		}
 	});
 
-	$('.posts-search > .title').click(function() {
+	$('.search > .title').click(function() {
 		var $content = $(this).parent().find('.content');
 		$('.main-content > article').not($(this).parent()).slideToggle(400);
 		$(this).toggleClass('active');
