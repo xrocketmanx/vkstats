@@ -16,12 +16,14 @@
 	</header>
 	<main class="main-content">
 		<article class="search public-search">
-			<div class="scroller">
-				<div class="content">
-					<form class="search-form" action="search" method="POST">
-					</form>
-					<section class="publics">
-					</section>
+			<div class="push">
+				<div class="scroller">
+					<div class="content">
+						<form class="search-form" action="search" method="POST">
+						</form>
+						<section class="publics">
+						</section>
+					</div>
 				</div>
 			</div>
 			<header class="title">
@@ -29,30 +31,32 @@
 			</header>
 		</article>
 		<article class="search posts-search">
-			<div class="scroller">
-				<div class="content">
-					<p class="hint">
-						<span>HINT:</span>
-						Put publics names and keywords for search. You will get posts ordered by
-						popularity. Quantity sets number of posts showed.
-					</p>
-					<form class="search-form" action="search" method="POST">
-						<p class="input-group">
-							<label for="publics">publics:</label>
-							<input type="search" name="publics" id="publics" required />
+			<div class="push">
+				<div class="scroller">
+					<div class="content">
+						<p class="hint">
+							<span>HINT:</span>
+							Put publics names and keywords for search. You will get posts ordered by
+							popularity. Quantity sets number of posts showed.
 						</p>
-						<p class="input-group">
-							<label for="keywords">keywords:</label>
-							<input type="text" name="keywords" id="keywords" />
-						</p>
-						<p class="input-group">
-							<label for="posts-quantity">quantity:</label>
-							<input type="number" name="quantity" min="1" id="posts-quantity" value="5" required />
-						</p>
-						<input type="submit" value="Search">
-					</form>
-					<section class="posts">
-					</section>
+						<form class="search-form" action="search" method="POST">
+							<p class="input-group">
+								<label for="publics">publics:</label>
+								<input type="search" name="publics" id="publics" required />
+							</p>
+							<p class="input-group">
+								<label for="keywords">keywords:</label>
+								<input type="text" name="keywords" id="keywords" />
+							</p>
+							<p class="input-group">
+								<label for="posts-quantity">quantity:</label>
+								<input type="number" name="quantity" min="1" id="posts-quantity" value="5" required />
+							</p>
+							<input type="submit" value="Search">
+						</form>
+						<section class="posts">
+						</section>
+					</div>
 				</div>
 			</div>
 			<header class="title">

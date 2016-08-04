@@ -12,7 +12,7 @@ $(document).ready(function() {
 
 		dom.clearPosts();
 		var $img = dom.showLoading($('.posts'));
-		$.post('search', data, function(posts) {
+		$.post('posts', data, function(posts) {
 			for (var i = 0; i < posts.length; i++) {
 				$img.remove();
 				dom.appendPost(posts[i]);
@@ -24,17 +24,17 @@ $(document).ready(function() {
 		var $active = $('.main-content article .active');
 		if ($active.length > 0) {
 			var $article = $active.parent();
-			var $content = $article.find('.content');
-			dom.pushToBottom($content, $active);
+			var $push = $article.find('.push');
+			dom.pushToBottom($push, $active);
 		}
 	});
 
 	$('.search > .title').click(function() {
-		var $content = $(this).parent().find('.content');
+		var $push = $(this).parent().find('.push');
 		$('.main-content > article').not($(this).parent()).slideToggle(400);
 		$(this).toggleClass('active');
-		dom.pushToBottom($content, $(this));
-		$content.slideToggle(400);
+		dom.pushToBottom($push, $(this));
+		$push.slideToggle(400);
 	});
 });
 
@@ -44,14 +44,16 @@ function DOM() {
 		var $post = $('<article>').addClass('post');
 
 		var $photos = $('<div>').addClass('photos');
-		var photoUrl = "";
-		for (var i = 0; i < post.attachments.length; i++) {
-			if (post.attachments[i].type === "photo") {
-				photoUrl = post.attachments[i].photo.photo_604;
-				var $photo = $('<img>').attr('src', photoUrl);
+		var attachments = post.attachments; 
+		for (var i = 0; i < attachments.length; i++) {
+			if (attachments[i].type === "photo") {
+				var $photo = $('<img>').attr('src', attachments[i].photo.photo_604);
 				$photos.append($photo)
 			}
 		}
+
+		var date = new Date(post.date * 1000);
+		var $date = $('<time>').text(formatDate(date));
 
 		var text = post.text ? post.text.slice(0, 200) + '...' : "";
 		var $text = $('<p>').text(text);
@@ -65,7 +67,7 @@ function DOM() {
 		var $likes = $('<em>').text(post.likes.count);
 		$like.append($likes);
 
-		$post.append($photos, $text, $url, $like);
+		$post.append($date, $photos, $text, $url, $like);
 		$section.append($post);
 	};
 
@@ -80,11 +82,24 @@ function DOM() {
 	};
 
 	var $header = $('.main-header');
-	this.pushToBottom = function($content, $footer){
+	this.pushToBottom = function($push, $footer){
 		var headerHeight = $header.height();
 		var footerHeight = $footer.outerHeight();
 		var docHeight = $(window).height();
-		var height = docHeight - headerHeight - footerHeight - 5;
-		$content.height(height);
+		var height = docHeight - headerHeight - footerHeight;
+		$push.height(height);
+		$push.find('.scroller').height(height);
+	}
+
+	function formatDate(date) {
+		var year = date.getFullYear();
+
+		var month = date.getMonth() + 1;
+		if (month < 10) month = "0" + month;
+
+		var day = date.getDate();
+		if (day < 10) day = "0" + day;
+
+		return day + "/" + month + "/" + year;
 	}
 }

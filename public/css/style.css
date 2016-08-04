@@ -160,7 +160,6 @@ input[type=submit]:active {
 
 .search .active {
 	background-color: #3498db;
-	margin-top: 5px;
 }
 
 .search .title h2 {
@@ -188,7 +187,6 @@ input[type=submit]:active {
 }
 
 .content {
-	display: none;
 	width: 74.999%;
 	margin: 0 auto;
 }
@@ -198,6 +196,10 @@ input[type=submit]:active {
 	text-align: center;
 	padding: 2em;
 	border-bottom: 1px solid #3498db;
+}
+
+.push {
+	display: none;
 }
 
 .scroller {
@@ -262,6 +264,11 @@ input[type=submit]:active {
 	padding-top: 20px;
 	font-weight: bold;
     color: #3498db;
+}
+
+.post time {
+	float: right;
+	color: #3498db;
 }
 
 @media only screen and (max-width: 817px) {
