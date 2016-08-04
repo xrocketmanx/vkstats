@@ -34,6 +34,9 @@ module.exports = function(urls) {
 		async.doWhilst(function(callback) {
 			postsRequest.getPosts(public, offset, count, function(error, res, body) {
 				if (!error && res.statusCode === 200) {
+					if (!body.response) {
+						console.log(public);
+					}
 					var posts = body.response.items;
 
 					if (posts.length > 0) {
