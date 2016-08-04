@@ -13,6 +13,7 @@ $(document).ready(function() {
 		dom.clearPosts();
 		var $img = dom.showLoading($('.posts'));
 		$.post('posts', data, function(posts) {
+			if (!posts) return;
 			for (var i = 0; i < posts.length; i++) {
 				$img.remove();
 				dom.appendPost(posts[i]);
@@ -43,19 +44,24 @@ function DOM() {
 		var $section = $('.posts');
 		var $post = $('<article>').addClass('post');
 
-		var $photos = $('<div>').addClass('photos');
-		var attachments = post.attachments; 
-		for (var i = 0; i < attachments.length; i++) {
-			if (attachments[i].type === "photo") {
-				var $photo = $('<img>').attr('src', attachments[i].photo.photo_604);
-				$photos.append($photo)
+		var attachments = post.attachments;
+		var $photos = $('<div>').addClass('photos'); 
+		if (attachments) {
+			for (var i = 0; i < attachments.length; i++) {
+				if (attachments[i].type === "photo") {
+					var $photo = $('<img>').attr('src', attachments[i].photo.photo_604);
+					$photos.append($photo)
+				}
 			}
 		}
 
 		var date = new Date(post.date * 1000);
 		var $date = $('<time>').text(formatDate(date));
 
-		var text = post.text ? post.text.slice(0, 200) + '...' : "";
+		var text = "";
+		if (post.text) {
+			text = post.text.length > 200 ? post.text.slice(0, 200) + '...' : post.text;
+		}
 		var $text = $('<p>').text(text);
 
 		var $url = $('<a>').attr({
