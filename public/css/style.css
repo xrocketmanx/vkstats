@@ -189,21 +189,71 @@ input[type=submit]:active {
 	width: 100%;
 	text-align: center;
 	padding: 2em;
-	border-bottom: 2px solid #2c3e50;
+	border-bottom: 1px solid #3498db;
 }
 
 .scroller {
 	overflow-y: scroll;
 }
 
-.posts img {
+.posts > img {
+	width: 64px;
+	height: 64px;
 	display: block;
 	margin: 5px auto;
 }
 
-img[href$="loading.gif"] {
-	width: 64px;
-	height: 64px;
+.post {
+	border-bottom: 1px solid #3498db;
+	padding-top: 5px;
+}
+
+.post:last-child {
+	border: none;
+}
+
+.post .photos {
+	width: 75%;
+}
+
+.post .photos img {
+	height: 188.5px;
+	width: 302px;
+	margin-right: 5px;
+	display: inline-block;
+}
+
+.post p {
+	margin-bottom: 5px;
+}
+
+.post a {
+	display: inline-block;
+	height: 32px;
+	width: 32px;
+	background: url('../img/external-link.png');
+	/*stupid chrome bugfix*/
+	-webkit-transform: rotate(0);
+    -moz-transform: rotate(0);
+	transform: rotate(0);
+}
+
+.post > a:hover {
+	opacity: 0.7;
+}
+
+.post .like {
+	width: 32px;
+	height: 32px;
+	background: url('../img/like.png') no-repeat center top;
+	text-align: center;
+	float: right;
+	font-size: 0.7em;
+	font-weight: bold;
+	position: relative;
+	padding-top: 20px;
+	font-weight: bold;
+    color: #3498db;
 }
 
 @media only screen and (max-width: 817px) {

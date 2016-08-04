@@ -10,6 +10,7 @@ $(document).ready(function() {
 			return obj;
 		}, {});
 
+		dom.clearPosts();
 		var $img = dom.showLoading($('.posts'));
 		$.post('search', data, function(posts) {
 			for (var i = 0; i < posts.length; i++) {
@@ -42,16 +43,35 @@ function DOM() {
 		var $section = $('.posts');
 		var $post = $('<article>').addClass('post');
 
-		var $text = $('<p>').text(post.text.slice(0, 100) + '...');
+		var $photos = $('<div>').addClass('photos');
+		var photoUrl = "";
+		for (var i = 0; i < post.attachments.length; i++) {
+			if (post.attachments[i].type === "photo") {
+				photoUrl = post.attachments[i].photo.photo_604;
+				var $photo = $('<img>').attr('src', photoUrl);
+				$photos.append($photo)
+			}
+		}
+
+		var text = post.text ? post.text.slice(0, 200) + '...' : "";
+		var $text = $('<p>').text(text);
+
 		var $url = $('<a>').attr({
 			href: post.url,
 			target: '_blank'
-		}).text("link");
-		var $likes = $('<em>').text(post.likes.count);
+		});
 
-		$post.append($text, $url, $likes);
+		var $like = $('<div>').addClass('like');
+		var $likes = $('<em>').text(post.likes.count);
+		$like.append($likes);
+
+		$post.append($photos, $text, $url, $like);
 		$section.append($post);
 	};
+
+	this.clearPosts = function() {
+		$('.posts').empty();
+	}
 
 	this.showLoading = function($element) {
 		var $img = $('<img>').attr('src', 'img/loading.gif');
