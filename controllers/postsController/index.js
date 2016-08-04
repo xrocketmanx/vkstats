@@ -26,30 +26,30 @@ module.exports = function(urls) {
 
 	postsController.getPublicPosts = function(public, keywords, callback) {
 		var search = generateSearch(keywords);
-		var emptyResponse = false;
 		var publicPosts = [];
 		var offset = 0;
 		var count = 100;
 
-		async.doWhilst(function(callback) {
-			postsRequest.getPosts(public, offset, count, function(error, posts) {
-				if (!error) {
-					if (posts.length > 0) {
-						var filteredPosts = filterPosts(public, posts, search);
-						publicPosts = publicPosts.concat(filteredPosts);
-					} else {
-						emptyResponse = true;
-					}
-					offset += count;
-					callback();
-				} else {
-					callback(error);
-				}
-			});
-		}, function() {
-			return !emptyResponse;
-		}, function(error) {
-			callback(error, publicPosts);
+		postsRequest.getPostsCount(public, function(error, postsCount) {
+			if (error) {
+				callback(error);
+			} else {
+				var times = Math.ceil(postsCount / count);
+				async.timesLimit(times, 100, function(n, next) {
+					offset = n * count;
+					postsRequest.getPosts(public, offset, count, function(error, posts) {
+						if (!error) {
+							var filteredPosts = filterPosts(public, posts, search);
+							publicPosts = publicPosts.concat(filteredPosts);
+							next();
+						} else {
+							next(error);
+						}
+					});
+				}, function(error) {
+					callback(error, publicPosts)
+				});
+			}
 		});
 	};
 
