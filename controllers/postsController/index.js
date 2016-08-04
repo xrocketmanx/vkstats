@@ -32,20 +32,14 @@ module.exports = function(urls) {
 		var count = 100;
 
 		async.doWhilst(function(callback) {
-			postsRequest.getPosts(public, offset, count, function(error, res, body) {
-				if (!error && res.statusCode === 200) {
-					if (!body.response) {
-						console.log(public);
-					}
-					var posts = body.response.items;
-
+			postsRequest.getPosts(public, offset, count, function(error, posts) {
+				if (!error) {
 					if (posts.length > 0) {
 						var filteredPosts = filterPosts(public, posts, search);
 						publicPosts = publicPosts.concat(filteredPosts);
 					} else {
 						emptyResponse = true;
 					}
-
 					offset += count;
 					callback();
 				} else {
