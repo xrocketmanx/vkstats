@@ -90,26 +90,47 @@ html, body {
 .input-group {
 	margin-top: 0;
 	display: inline;
+	position: relative;
+}
+
+label {
+	position: absolute;
+	top: 0px;
+	left: 5px;
+	transition: .5s;
+	color: #34495e;
+	cursor: text;
+}
+
+.filled label {
+	top: -35px;
 }
 
 input:not([type=submit]) {
 	background-color: #3498db;
 	color: #2c3e50;
 	font-weight: bold;
-	border: 1px solid #34495e;
+	border-top: none;
+	border-left: 2px solid transparent;
+	border-right: 2px solid transparent;
+	border-bottom: 2px solid #34495e;
 	width: 25%;
-}
-
-input[type=number] {
-	width: 3em;
+	padding: 5px 10px;
+	transition: .5s;
 }
 
 input:focus {
 	outline: none;
+	border-left: 2px solid #34495e;
+	border-right: 2px solid #34495e;
 }
 
 input {
 	font-size: 1em;
+}
+
+input[type=number] {
+	width: 15%;
 }
 
 input:-webkit-autofill {
@@ -286,8 +307,23 @@ input[type=submit]:active {
 	}
 
 	.input-group input {
+		border-top: 2px solid transparent;
 		display: block;
 		width: 100%;
+		margin-top: 25px;
+	}
+
+	.input-group input:focus {
+		border: 2px solid #34495e;
+	}
+
+	label {
+		top: 3px;
+	}
+
+	.filled label {
+		color: transparent;
+		top: 3px;
 	}
 }
 

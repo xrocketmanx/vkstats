@@ -60,7 +60,7 @@ module.exports = function(urls) {
 		for (var i = 0; i < posts.length; i++) {
 			if (posts[i].is_pinned) break;
 			if (!search || posts[i].text.search(search) >= 0) {
-				posts[i].url = urlutils.generatePostUrl(public, posts[i].owner_id, posts[i].id);
+				posts[i].url = urlutils.generatePostUrl(public, posts[i].owner_id, posts[i].id); //optimize
 				filtered.push(posts[i]);
 			}
 		}

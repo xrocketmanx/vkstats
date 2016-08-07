@@ -30,6 +30,16 @@ $(document).ready(function() {
 		}
 	});
 
+	$('.input-group input').focus(function() {
+		$(this).parent().addClass('filled');
+	});
+
+	$('.input-group input').blur(function() {
+		if (!$(this).val()) {
+			$(this).parent().removeClass('filled');
+		}
+	});
+
 	$('.search > .title').click(function() {
 		var $push = $(this).parent().find('.push');
 		$('.main-content > article').not($(this).parent()).slideToggle(400);
