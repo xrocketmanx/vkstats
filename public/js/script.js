@@ -1,59 +1,102 @@
 "use strict";
 
 $(document).ready(function() {
-	var dom = new DOM();
+	var errorProvider = new ErrorProvider(2000, {
+		top: '5px',
+		right: '5px',
+		position: 'fixed'
+	});
+	var view = new View();
+
+	var postsController = new PostsController(view, errorProvider);
 
 	$('.posts-search .search-form').submit(function(event) {
 		event.preventDefault();
-		var data = $(this).serializeArray().reduce(function(obj, item) {
-			obj[item.name] = item.value;
-			return obj;
-		}, {});
+		postsController.loadPosts(this);
+	});
 
-		dom.clearPosts();
-		var $img = dom.showLoading($('.posts'));
-		$.post('posts', data, function(posts) {
-			if (!posts) return;
-			for (var i = 0; i < posts.length; i++) {
-				$img.remove();
-				dom.appendPost(posts[i]);
-			}
-		});
+
+	$('.search > .title').click(function() {
+		view.slideArticle($(this).parent());
 	});
 
 	$(window).resize(function() {
-		var $active = $('.main-content article .active');
-		if ($active.length > 0) {
-			var $article = $active.parent();
-			var $push = $article.find('.push');
-			dom.pushToBottom($push, $active);
-		}
+		view.recalculatePush();
 	});
 
-	$('.input-group input').focus(function() {
-		$(this).parent().addClass('filled');
-	}).blur(function() {
-		if (!$(this).val()) {
-			$(this).parent().removeClass('filled');
-		}
-	}).each(function(i, element) {
-		if ($(element).val()) {
-			$(element).parent().addClass('filled');
-		}
-	});
-
-	
-
-	$('.search > .title').click(function() {
-		var $push = $(this).parent().find('.push');
-		$('.main-content > article').not($(this).parent()).slideToggle(400);
-		$(this).toggleClass('active');
-		dom.pushToBottom($push, $(this));
-		$push.slideToggle(400);
-	});
+	view.styleInputs($('.input-group input'), 'filled');
 });
 
-function DOM() {
+function PostsController(view, errorProvider) {
+	var dom = new PostsDOM(view);
+	var server = new PostsServer();
+
+	this.loadPosts = function(form) {
+		if (server.getPosts.isLocked()) return;
+
+		var searchOptions = view.getFormData(form);
+		dom.clearPosts();
+		var $img = dom.showLoading();
+
+		server.getPosts(searchOptions, {
+			success: function(posts) {
+				$img.remove();
+				for (var i = 0; i < posts.length; i++) {
+					dom.appendPost(posts[i]);
+				}
+			},
+			error: function(obj, status, errorMsg) {
+				$img.remove();
+				errorProvider.show(errorMsg);
+			}
+		});
+	};
+}
+
+function PostsServer() {
+	var POSTS_URL = 'posts';
+	this.getPosts = blockingOperation(function(data, callbacks, locker) {
+		$.ajax({
+			url: POSTS_URL,
+			type: "GET",
+			data: data,
+			success: callbacks.success,
+			error: callbacks.error,
+			complete: locker.freeLock.bind(locker)
+		});
+	});
+
+	/**
+	 * Blocks all tries of calling func
+	 * untill previous call free block
+	 * @param  {Function} func 
+	 * @return {Function} decorated func
+	 */
+	function blockingOperation(func) {
+		var lock = false;
+		var locker = { 
+			freeLock: function() {
+				lock = false;
+			}
+		};
+
+		function block() {
+			if (lock) return;
+			lock = true;
+			var args = Array.prototype.slice.call(arguments);
+			args.push(locker);
+			func.apply(this, args);
+		}
+
+		block.isLocked = function() {
+			return lock;
+		}
+
+		return block;
+	}
+}
+
+function PostsDOM(view) {
 	 this.appendPost = function(post) {
 		var $section = $('.posts');
 		var $post = $('<article>').addClass('post');
@@ -70,7 +113,7 @@ function DOM() {
 		}
 
 		var date = new Date(post.date * 1000);
-		var $date = $('<time>').text(formatDate(date));
+		var $date = $('<time>').text(view.formatDate(date));
 
 		var text = "";
 		if (post.text) {
@@ -93,25 +136,53 @@ function DOM() {
 
 	this.clearPosts = function() {
 		$('.posts').empty();
-	}
+	};
 
+	this.showLoading = function() {
+		return view.showLoading($('.posts'));
+	};
+}
+
+function View() {
 	this.showLoading = function($element) {
 		var $img = $('<img>').attr('src', 'img/loading.gif');
 		$element.append($img);
 		return $img;
 	};
 
-	var $header = $('.main-header');
-	this.pushToBottom = function($push, $footer){
-		var headerHeight = $header.height();
-		var footerHeight = $footer.outerHeight();
-		var docHeight = $(window).height();
-		var height = docHeight - headerHeight - footerHeight;
-		$push.height(height);
-		$push.find('.scroller').height(height);
-	}
+	this.slideArticle = function($article) {
+		var $push = $article.find('.push');
+		var $title = $article.find('.title');
+		$('.main-content > article').not($article).slideToggle(400);
+		$title.toggleClass('active');
+		pushToBottom($push, $title);
+		$push.slideToggle(400);
+	};
 
-	function formatDate(date) {
+	this.recalculatePush = function() {
+		var $active = $('.main-content article .active');
+		if ($active.length > 0) {
+			var $article = $active.parent();
+			var $push = $article.find('.push');
+			pushToBottom($push, $active);
+		}
+	};
+
+	this.styleInputs = function($inputs, className) {
+		$inputs.focus(function() {
+			$(this).parent().addClass(className);
+		}).blur(function() {
+			if (!$(this).val()) {
+				$(this).parent().removeClass(className);
+			}
+		}).each(function(i, element) {
+			if ($(element).val()) {
+				$(element).parent().addClass(className);
+			}
+		});
+	};
+
+	this.formatDate = function(date) {
 		var year = date.getFullYear();
 
 		var month = date.getMonth() + 1;
@@ -121,5 +192,58 @@ function DOM() {
 		if (day < 10) day = "0" + day;
 
 		return day + "/" + month + "/" + year;
+	};
+
+	this.getFormData = function(form) {
+		return $(form).serializeArray().reduce(function(obj, item) {
+			obj[item.name] = item.value;
+			return obj;
+		}, {});
+	};
+
+	var $header = $('.main-header');
+	function pushToBottom($push, $footer){
+		var headerHeight = $header.height();
+		var footerHeight = $footer.outerHeight();
+		var docHeight = $(window).height();
+		var height = docHeight - headerHeight - footerHeight;
+		$push.height(height);
+		$push.find('.scroller').height(height);
 	}
 }
+
+/**
+ * @class  Providing error notifications
+ * @param  {Number} ms       showing time
+ * @param  {Object} position position of notifier
+ */
+function ErrorProvider(ms, position) {
+
+	/**
+	 * Showes error message
+	 * @param  {String} msg message
+	 */
+	this.show = function(msg) {
+		if (exists() || !msg) return;
+		var $notifier = createNotifier(msg);
+		$('body').append($notifier);
+		setTimeout(function() {
+			$notifier.fadeOut(200, function() {
+				$(this).remove();
+			});
+		}, ms);
+	};
+
+	function createNotifier(msg) {
+		return $('<div></div>')
+			.addClass('error-provider')
+			.text(msg)
+			.css(position);
+	}
+
+	function exists() {
+		return $('.error-provider').length > 0;
+	}
+
+};
+
