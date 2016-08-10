@@ -117,8 +117,6 @@ html, body {
 
 .search-form input:focus {
 	outline: none;
-	border-left: 2px solid #34495e;
-	border-right: 2px solid #34495e;
 }
 
 .search-form input {
@@ -176,6 +174,11 @@ html, body {
 	width: 25%;
 	padding: 5px 10px;
 	transition: .5s;
+}
+
+.input-group input:not([type=submit]):focus {
+	border-left: 2px solid #34495e;
+	border-right: 2px solid #34495e;
 }
 
 .input-group input[type=number] {
