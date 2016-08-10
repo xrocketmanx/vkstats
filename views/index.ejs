@@ -19,7 +19,7 @@
 			<div class="push">
 				<div class="scroller">
 					<div class="content">
-						<form class="search-form" action="search" method="POST">
+						<form class="search-form" action="publics" method="POST">
 						</form>
 						<section class="publics">
 						</section>
@@ -39,7 +39,7 @@
 							Put publics names and keywords for search. You will get posts ordered by
 							popularity. Quantity sets number of posts showed.
 						</p>
-						<form class="search-form" action="search" method="POST">
+						<form class="search-form" action="posts" method="POST">
 							<p class="input-group">
 								<label for="publics">publics:</label>
 								<input type="search" name="publics" id="publics" required />
@@ -49,7 +49,7 @@
 								<input type="text" name="keywords" id="keywords" />
 							</p>
 							<p class="input-group">
-								<input type="number" name="quantity" min="1" id="posts-quantity" required />
+								<input type="number" name="quantity" min="1" max="50" value="5" id="posts-quantity" required />
 								<label for="posts-quantity">quantity:</label>
 							</p>
 							<input type="submit" value="Search">
