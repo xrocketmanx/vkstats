@@ -291,6 +291,15 @@ html, body {
 	color: #3498db;
 }
 
+/**
+ * Error provider
+ */
+.error-provider {
+	background-color: rgba(44, 62, 80, 0.73);
+	color: #ff1b1b;
+	padding: 5px 10px;
+}
+
 @media only screen and (max-width: 817px) {
 	.content {
 		width: 90%;

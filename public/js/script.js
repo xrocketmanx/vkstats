@@ -47,7 +47,7 @@ function PostsController(view, errorProvider) {
 			},
 			error: function(obj, status, errorMsg) {
 				$img.remove();
-				errorProvider.show(errorMsg);
+				errorProvider.show('status ' + obj.status + ':' + errorMsg);
 			}
 		});
 	};
