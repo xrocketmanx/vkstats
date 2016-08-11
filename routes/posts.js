@@ -24,30 +24,41 @@ module.exports = function(postsController) {
 
 //todo: create own errors by inherit
 function parseSearchOptions(options) {
+	//todo: get from db
+	var ranges = {
+		maxPublics: 3,
+		maxKeywords: 10,
+		minQuantity: 1,
+		maxQuantity: 50
+	};
+
 	var result = {};
 	var keywords = options.keywords.replace(/\s/g, '').split(',');
-	if (keywords.length <= 10) {
+	if (keywords.length <= ranges.maxKeywords) {
 		result.keywords = removeDuplicates(keywords);
 	} else {
-		throw "Too much keywords sent";
+		throw "too much keywords sent";
 	}
 
 	if (options.publics) {
 		var publics = options.publics.replace(/\s/g, '').split(',');
-		if (publics.length > 0 && publics.length <= 3) {
+		if (publics.length > 0 && publics.length <= ranges.maxPublics) {
 			result.publics = removeDuplicates(publics);
 		} else {
-			throw "wrong number of publics sent (max=3)";
+			throw "too much publics sent";
 		}
 	} else {
 		throw "no publics parameter sent";	
 	}
 
 	if (options.quantity) {
-		if (options.quantity >= 1 && options.quantity <= 50) {
+		if (options.quantity >= ranges.minQuantity && options.quantity <= ranges.maxQuantity) {
 			result.quantity = options.quantity;
 		} else {
-			throw "quantity is in wrong range. must be between 1 and 50";
+			throw "quantity is in wrong range. must be between " + 
+				ranges.minQuantity + 
+				" and " + 
+				ranges.maxQuantity;
 		}
 	} else {n
 		throw "no quantity parameter sent";
