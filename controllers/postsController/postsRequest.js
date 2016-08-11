@@ -14,10 +14,11 @@ module.exports = function(urlutils) {
 			url: urlutils.stringifyUrl(method),
 			json: true
 		}, function(error, res, body) {
-			if (!error && res.statusCode === 200) {
+			var err = getError(error, res, body);
+			if (!err) {
 				callback(null, body.response.items);
 			} else {
-				callback(error);
+				callback(err);
 			}	
 		});
 	};
@@ -32,13 +33,26 @@ module.exports = function(urlutils) {
 			url: urlutils.stringifyUrl(method),
 			json: true
 		}, function(error, res, body) {
-			if (!error && res.statusCode === 200) {
+			var err = getError(error, res, body);
+			if (!err) {
 				callback(null, body.response.count);
 			} else {
-				callback(error);
+				callback(err);
 			}	
 		});
 	}
 
 	return postsRequest;
+}
+
+function getError(error, res, body) {
+	if (error) {
+		return error.message;
+	} else if (body.error) {
+		return body.error.error_msg;
+	} else if (res.statusCode !== 200) {
+		return "VK API responded with " + res.statusCode;
+	}
+
+	return null;
 }

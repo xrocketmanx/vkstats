@@ -1,7 +1,7 @@
 "use strict";
 
 $(document).ready(function() {
-	var errorProvider = new ErrorProvider(2000, {
+	var errorProvider = new ErrorProvider(5000, {
 		top: '5px',
 		right: '5px',
 		position: 'fixed'
@@ -45,9 +45,9 @@ function PostsController(view, errorProvider) {
 					dom.appendPost(posts[i]);
 				}
 			},
-			error: function(obj, status, errorMsg) {
+			error: function(error) {
 				$img.remove();
-				errorProvider.show('status ' + obj.status + ':' + errorMsg);
+				errorProvider.show(error);
 			}
 		});
 	};
@@ -223,9 +223,9 @@ function ErrorProvider(ms, position) {
 	 * Showes error message
 	 * @param  {String} msg message
 	 */
-	this.show = function(msg) {
-		if (exists() || !msg) return;
-		var $notifier = createNotifier(msg);
+	this.show = function(error) {
+		if (exists() || !error) return;
+		var $notifier = createNotifier(error);
 		$('body').append($notifier);
 		setTimeout(function() {
 			$notifier.fadeOut(200, function() {
@@ -234,11 +234,14 @@ function ErrorProvider(ms, position) {
 		}, ms);
 	};
 
-	function createNotifier(msg) {
-		return $('<div></div>')
+	function createNotifier(error) {
+		var msg = "status " + error.status + ":" + error.statusText + "; ";
+		var description = error.responseText;
+		return $('<div>')
 			.addClass('error-provider')
 			.text(msg)
-			.css(position);
+			.css(position)
+			.append($('<p>').text(description));
 	}
 
 	function exists() {
